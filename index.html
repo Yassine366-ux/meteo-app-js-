@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Météo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+</head>
+<body>
+<div class="background-video">
+    <video autoplay muted loop id="bgVideo">
+        <source src="video/default.mp4" type="video/mp4">
+        Votre navigateur ne supporte pas la vidéo HTML5.
+    </video>
+</div>
+
+<main>
+    <form>
+        <input type="text" id="name" placeholder="Entrez une ville" required>
+        <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+    </form>
+
+    <a href="historique.html" class="btn-history"><i class="fa-solid fa-rotate-left"></i> Historique</a>
+
+    <!-- Flip Card -->
+    <div class="weather-card">
+        <div class="card-inner">
+            <!-- Face avant -->
+            <div class="card-front">
+                <figure class="name">
+                    <figcaption></figcaption>
+                    <img src="" alt="pays">
+                </figure>
+                <div class="temperature">
+                    <img src="" alt="météo">
+                    <span></span>°
+                </div>
+                <p class="description"></p>
+                <div class="details">
+                    <div class="box clouds"><span id="clouds"></span>
+                        <p>Nuages</p></div>
+                    <div class="box humidity"><span id="humidity"></span>
+                        <p>Humidité</p></div>
+                    <div class="box pressure"><span id="pressure"></span>
+                        <p>Pression</p></div>
+                </div>
+            </div>
+
+
+            <!-- Face arrière -->
+            <div class="card-back">
+                <h3>Prévisions 5 jours</h3>
+                <div id="forecast"></div>
+            </div>
+        </div>
+    </div>
+    <div id="map"
+         style="height: 400px; margin: 30px auto; width: 90%; max-width: 600px; border-radius: 15px; overflow: hidden;"></div>
+
+</main>
+</body>
+</html>

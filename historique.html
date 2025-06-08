@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Historique météo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="historique.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+<!-- Vidéo de fond -->
+<video autoplay muted loop playsinline class="background-video">
+    <source src="video/1001006828.mp4" type="video/mp4">
+    Votre navigateur ne supporte pas la vidéo.
+</video>
+
+<main>
+    <h2>Historique des recherches</h2>
+
+    <!-- Message d'information -->
+    <div id="message" style="text-align:center; margin-bottom:15px;"></div>
+
+    <!-- Section d'historique -->
+    <section id="historique">
+        <p>Chargement...</p>
+    </section>
+
+    <!-- Bouton pour effacer l'historique -->
+    <button id="clear-btn" class="btn-clear">
+        <i class="fa-solid fa-trash"></i> Effacer l’historique
+    </button>
+
+    <!-- Bouton retour à l'accueil -->
+    <a href="index.html" class="btn-back">
+        <i class="fa-solid fa-arrow-left"></i> Retour à l'accueil
+    </a>
+</main>
+
+<script>
+    // Charger l'historique
+    fetch('historique.php')
+        .then(res => res.json())
+        .then(data => {
+            const section = document.getElementById('historique');
+            if (data.length === 0) {
+                section.innerHTML = "<p>Aucune donnée disponible.</p>";
+            } else {
+                section.innerHTML = '';
+                data.forEach(item => {
+                    const div = document.createElement('div');
+                    div.style.marginBottom = '15px';
+                    div.style.padding = '10px';
+                    div.style.backgroundColor = '#ffffff33'; // transparence
+                    div.style.borderRadius = '10px';
+                    div.style.color = 'white';
+
+                    div.innerHTML = `
+                        <strong>${item.ville}</strong> —
+                        ${item.description}, ${item.temperature}°C,
+                        ${item.pression} hPa, ${item.humidite}% humidité
+                        <br><small><i class="fa-regular fa-clock"></i> ${item.date_recherche}</small>
+                    `;
+                    section.appendChild(div);
+                });
+            }
+        })
+        .catch(() => {
+            document.getElementById('historique').innerHTML = "<p>Erreur lors du chargement des données.</p>";
+        });
+
+    // Effacer l'historique
+    document.getElementById('clear-btn').addEventListener('click', (e) => {
+        e.preventDefault();
+        if (confirm("Voulez-vous vraiment effacer tout l'historique ?")) {
+            fetch('clear_historique.php', { method: 'POST' })
+                .then(res => res.text())
+                .then(() => {
+                    document.getElementById('historique').innerHTML = "<p>Aucune donnée disponible.</p>";
+                    showMessage("Historique vidé avec succès.");
+                })
+                .catch(() => {
+                    showMessage("Erreur lors de la suppression de l'historique.");
+                });
+        }
+    });
+
+    // Affichage d'un message temporaire
+    function showMessage(message) {
+        const messageDiv = document.getElementById('message');
+        messageDiv.innerText = message;
+        messageDiv.style.color = '#28a745'; // vert
+        setTimeout(() => {
+            messageDiv.innerText = '';
+        }, 3000);
+    }
+</script>
+
+</body>
+</html>
